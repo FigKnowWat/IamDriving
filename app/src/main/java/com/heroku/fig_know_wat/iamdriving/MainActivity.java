@@ -1,12 +1,12 @@
 package com.heroku.fig_know_wat.iamdriving;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -34,6 +34,9 @@ public class MainActivity extends AppCompatActivity {
     @ViewById(R.id.edit_sms_text)
     EditText smsText;
 
+    @ViewById(R.id.main_drawer_layout)
+    DrawerLayout drawerLayout;
+
     @TextChange(R.id.edit_sms_text)
     void onTextChangesOnHelloTextView() {
         if (preferencesManager != null) {
@@ -44,8 +47,6 @@ public class MainActivity extends AppCompatActivity {
     @AfterViews
     void initUI() {
         preferencesManager = new PreferencesManager(getApplicationContext());
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         drivingButton.setChecked(preferencesManager.isDriving());
         smsText.setText(preferencesManager.getSmsText());
@@ -65,10 +66,55 @@ public class MainActivity extends AppCompatActivity {
         });
         sendSmsCheckBox.setChecked(preferencesManager.isSendSms());
         smsText.setEnabled(preferencesManager.isSendSms());
+
+        setupNavigationView();
+        setupToolbar();
+    }
+
+    private void setupToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
+        setSupportActionBar(toolbar);
+        // Show menu icon
+        final ActionBar ab = getSupportActionBar();
+        ab.setHomeAsUpIndicator(R.mipmap.ic_menu);
+        ab.setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void setupNavigationView() {
+        drawerLayout = (DrawerLayout) findViewById(R.id.main_drawer_layout);
+        ((NavigationView) findViewById(R.id.navigation_view)).setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                int id = menuItem.getItemId();
+                switch (id) {
+                    case R.id.navigation_item_main:
+//                        startActivity(new Intent().setClass(MainActivity.this, FloatingActionButtonActivity.class));
+//                        MainActivity.this.finish();
+                        break;
+
+                    case R.id.navigation_item_journal:
+//                        startActivity(new Intent().setClass(MainActivity.this, InputTextActivity.class));
+//                        MainActivity.this.finish();
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                drawerLayout.openDrawer(GravityCompat.START);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

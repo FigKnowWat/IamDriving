@@ -4,4 +4,6 @@
     <string name="toggle_button_label_off">Я не за рулем</string>
     <string name="sms_check_box_label">Отправить SMS</string>
     <string name="sms_text_default">Я за рулем. Я перезвоню вам позже.</string>
+    <string name="main_screen_label">Главный экран</string>
+    <string name="journal_label">Журнал звонков</string>
 </resources>
