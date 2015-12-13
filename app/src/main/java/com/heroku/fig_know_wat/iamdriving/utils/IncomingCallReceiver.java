@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
@@ -18,7 +19,8 @@ public class IncomingCallReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (!(new PreferencesManager(context).isDriving())) {
+        PreferencesManager preferencesManager = new PreferencesManager(context);
+        if (!preferencesManager.isDriving()) {
             return;
         }
 
@@ -34,9 +36,22 @@ public class IncomingCallReceiver extends BroadcastReceiver {
             if (phoneNumber != null) {
                 telephonyService.endCall();
                 Log.e("HANG UP", phoneNumber);
+                String event = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
+                if (preferencesManager.isSendSms() && event.equals("RINGING")) {
+                    sendSms(phoneNumber, preferencesManager.getSmsText());
+                }
             }
         } catch (Exception e) {
             Log.e("Phone Receive Error", " " + e);
         }
+    }
+
+    private void sendSms(String phoneNumber, String message) {
+        SmsManager sms = SmsManager.getDefault();
+        sms.sendTextMessage(phoneNumber, null, message, null, null);
+    }
+
+    private void saveIncomingCall(String phoneNumber) {
+
     }
 }

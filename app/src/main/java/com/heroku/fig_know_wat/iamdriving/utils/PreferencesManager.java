@@ -37,6 +37,7 @@ public class PreferencesManager {
 
     public void setIsSendSms(boolean isSendSms) {
         editor.putBoolean(IS_SEND_SMS, isSendSms);
+        editor.commit();
     }
 
     public String getSmsText() {
