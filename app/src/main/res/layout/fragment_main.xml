@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ToggleButton
+        android:id="@+id/btn_toggle_driving"
+        android:layout_width="200dip"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:checked="false"
+        android:textOff="@string/toggle_button_label_off"
+        android:textOn="@string/toggle_button_label_on" />
+
+    <CheckBox
+        android:id="@+id/checkbox_send_sms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dip"
+        android:checked="false"
+        android:text="@string/sms_check_box_label" />
+
+    <EditText
+        android:id="@+id/edit_sms_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dip"
+        android:text="@string/sms_text_default" />
+
+</LinearLayout>

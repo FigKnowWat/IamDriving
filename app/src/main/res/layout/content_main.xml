@@ -13,28 +13,9 @@
     tools:context="com.heroku.fig_know_wat.iamdriving.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <ToggleButton
-        android:id="@+id/btn_toggle_driving"
-        android:layout_width="200dip"
-        android:layout_height="wrap_content"
-        android:checked="false"
-        android:layout_gravity="center_horizontal"
-        android:textOff="@string/toggle_button_label_off"
-        android:textOn="@string/toggle_button_label_on" />
-
-    <CheckBox
-        android:id="@+id/checkbox_send_sms"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dip"
-        android:checked="false"
-        android:text="@string/sms_check_box_label" />
-
-    <EditText
-        android:id="@+id/edit_sms_text"
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/sms_text_default"
-        android:layout_marginTop="10dip" />
+        android:layout_height="match_parent"/>
 
 </LinearLayout>
