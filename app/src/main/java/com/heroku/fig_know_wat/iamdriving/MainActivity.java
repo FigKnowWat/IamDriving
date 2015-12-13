@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     void initUI() {
         setupNavigationView();
         setupToolbar();
+        showFragment(new MainFragment());
     }
 
     private void setupToolbar() {
@@ -76,14 +77,17 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
-
+        showFragment(fragment);
         // Highlight the selected item, update the title, and close the drawer
         menuItem.setChecked(true);
         setTitle(menuItem.getTitle());
         drawerLayout.closeDrawers();
+    }
+
+    private void showFragment(Fragment fragment) {
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
     }
 
     @Override
