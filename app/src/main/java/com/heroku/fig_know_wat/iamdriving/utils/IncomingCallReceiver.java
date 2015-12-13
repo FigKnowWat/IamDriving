@@ -9,8 +9,12 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.android.internal.telephony.ITelephony;
+import com.heroku.fig_know_wat.iamdriving.db.DatabaseHelper;
+import com.heroku.fig_know_wat.iamdriving.db.JournalORMLite;
+import com.j256.ormlite.dao.Dao;
 
 import java.lang.reflect.Method;
+import java.sql.SQLException;
 
 /**
  * Created by Alex on 13/12/15.
@@ -37,8 +41,11 @@ public class IncomingCallReceiver extends BroadcastReceiver {
                 telephonyService.endCall();
                 Log.e("HANG UP", phoneNumber);
                 String event = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
-                if (preferencesManager.isSendSms() && event.equals("RINGING")) {
-                    sendSms(phoneNumber, preferencesManager.getSmsText());
+                if (event.equals("RINGING")) {
+                    if (preferencesManager.isSendSms()) {
+                        sendSms(phoneNumber, preferencesManager.getSmsText());
+                    }
+                    saveIncomingCall(context, phoneNumber);
                 }
             }
         } catch (Exception e) {
@@ -49,9 +56,19 @@ public class IncomingCallReceiver extends BroadcastReceiver {
     private void sendSms(String phoneNumber, String message) {
         SmsManager sms = SmsManager.getDefault();
         sms.sendTextMessage(phoneNumber, null, message, null, null);
+        Log.e("Send SMS", "number: " + phoneNumber + "; message:" + message);
     }
 
-    private void saveIncomingCall(String phoneNumber) {
-
+    private void saveIncomingCall(Context context, String phoneNumber) {
+        DatabaseHelper databaseHelper = new DatabaseHelper(context);
+        try {
+            Dao<JournalORMLite, Integer> dao = databaseHelper.getDao();
+            JournalORMLite phoneCall = new JournalORMLite(phoneNumber, System.currentTimeMillis());
+            dao.create(phoneCall);
+            Log.e("Save to db", phoneCall.toString());
+            Log.e("cell counts", String.valueOf(dao.countOf()));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
