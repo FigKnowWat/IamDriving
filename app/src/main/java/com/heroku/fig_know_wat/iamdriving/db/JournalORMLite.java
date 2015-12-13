@@ -17,7 +17,7 @@ public class JournalORMLite {
     @DatabaseField(canBeNull = false)
     String phoneNumber;
     @DatabaseField(canBeNull = false)
-    Date created;
+    Date date;
 
     JournalORMLite() {
     }
@@ -25,7 +25,17 @@ public class JournalORMLite {
 
     public JournalORMLite(String phoneNumber, long date) {
         this.phoneNumber = phoneNumber;
-        this.created = new Date(date);
+        this.date = new Date(date);
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public String getDate() {
+        SimpleDateFormat dateFormatter = new SimpleDateFormat(
+                "dd.MM.yyyy HH:mm:ss");
+        return dateFormatter.format(date);
     }
 
     @Override
@@ -33,9 +43,7 @@ public class JournalORMLite {
         StringBuilder sb = new StringBuilder();
         sb.append(_id);
         sb.append(", ").append(phoneNumber);
-        SimpleDateFormat dateFormatter = new SimpleDateFormat(
-                "MM/dd/yyyy HH:mm:ss.S");
-        sb.append(", ").append(dateFormatter.format(created));
+        sb.append(", ").append(getDate());
         return sb.toString();
     }
 }
